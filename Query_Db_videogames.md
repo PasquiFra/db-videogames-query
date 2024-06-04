@@ -109,14 +109,48 @@ JOIN
 
 6) Selezionare categorie e classificazioni PEGI dei videogiochi che hanno ricevuto recensioni da 4 e 5 stelle, mostrandole una sola volta (3363)
 
-    
+    SELECT DISTINCT categories.name AS 'Categoria', pegi_labels.name AS 'Classificazione' 
+    FROM `videogames` 
+    JOIN pegi_label_videogame ON pegi_label_videogame.videogame_id = videogames.id 
+    JOIN pegi_labels ON pegi_labels.id = pegi_label_videogame.pegi_label_id 
+    JOIN category_videogame ON category_videogame.videogame_id = videogames.id 
+    JOIN categories ON categories.id = category_videogame.category_id 
+    JOIN reviews ON reviews.videogame_id = videogames.id 
+    WHERE reviews.rating >= 4; 
 
 7) Selezionare quali giochi erano presenti nei tornei nei quali hanno partecipato i giocatori il cui nome inizia per 'S' (474)
 
+    SELECT videogames.id, videogames.name AS 'Videogame' 
+    FROM `videogames` 
+    JOIN tournament_videogame ON tournament_videogame.videogame_id = videogames.id 
+    JOIN tournaments ON tournaments.id = tournament_videogame.tournament_id 
+    JOIN player_tournament ON player_tournament.tournament_id = tournaments.id 
+    JOIN players ON players.id = player_tournament.player_id 
+    WHERE players.name LIKE 'S%' 
+    GROUP BY videogames.id; 
+
 8) Selezionare le città in cui è stato giocato il gioco dell'anno del 2018 (36)
+
+    SELECT DISTINCT tournaments.city
+    FROM `tournaments` 
+    JOIN tournament_videogame ON tournament_videogame.tournament_id = tournaments.id
+    JOIN videogames ON videogames.id = tournament_videogame.videogame_id
+    JOIN award_videogame ON award_videogame.videogame_id = videogames.id
+    JOIN awards ON awards.id = award_videogame.award_id
+    WHERE awards.id = 1 AND award_videogame.year = 2018;
 
 9) Selezionare i giocatori che hanno giocato al gioco più atteso del 2018 in un torneo del 2019 (991)
 
+    SELECT DISTINCT players.id, players.name, players.lastname
+    FROM `players`
+    JOIN player_tournament ON player_tournament.player_id = players.id
+    JOIN tournaments ON tournaments.id = player_tournament.tournament_id
+    JOIN tournament_videogame ON tournament_videogame.tournament_id = tournaments.id
+    JOIN videogames ON videogames.id = tournament_videogame.videogame_id
+    JOIN award_videogame ON award_videogame.videogame_id = videogames.id
+    JOIN awards ON awards.id = award_videogame.award_id
+    WHERE awards.id = 5 AND award_videogame.year = 2018
+    AND tournaments.year = 2019
 
 **BONUS**
 
