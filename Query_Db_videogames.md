@@ -84,17 +84,32 @@ JOIN
 
 1) Selezionare i dati di tutti giocatori che hanno scritto almeno una recensione, mostrandoli una sola volta (996)
 
-    
+    SELECT players.*, COUNT(reviews.id) FROM `reviews` JOIN `players` ON player_id = players.id
+    GROUP BY `player_id`
 
 2) Sezionare tutti i videogame dei tornei tenuti nel 2016, mostrandoli una sola volta (226)
 
+    SELECT videogames.* FROM `videogames` JOIN tournament_videogame ON videogames.id = tournament_videogame.videogame_id JOIN tournaments ON tournament_videogame.tournament_id = tournaments.id WHERE tournaments.year = 2016 GROUP BY videogames.id; 
+
 3) Mostrare le categorie di ogni videogioco (1718)
+
+    SELECT videogames.id, videogames.name AS 'videogame', categories.name AS 'categoria' FROM videogames INNER JOIN category_videogame ON category_videogame.videogame_id = videogames.id INNER JOIN categories ON categories.id = category_videogame.category_id ORDER BY category_videogame.videogame_id; 
 
 4) Selezionare i dati di tutte le software house che hanno rilasciato almeno un gioco dopo il 2020, mostrandoli una sola volta (6)
 
+    SELECT software_houses.* FROM `software_houses` JOIN videogames ON videogames.software_house_id = software_houses.id WHERE YEAR(videogames.release_date) >= 2020 GROUP BY software_houses.id; 
+
 5) Selezionare i premi ricevuti da ogni software house per i videogiochi che ha prodotto (55)
 
+    SELECT awards.name AS 'Nome Premio', videogames.name AS 'Nome Videogame', software_houses.name AS 'Nome Software House' 
+    FROM `awards` 
+    JOIN award_videogame ON award_videogame.award_id = awards.id 
+    JOIN videogames on videogames.id = award_videogame.videogame_id 
+    JOIN software_houses ON software_houses.id = videogames.software_house_id; 
+
 6) Selezionare categorie e classificazioni PEGI dei videogiochi che hanno ricevuto recensioni da 4 e 5 stelle, mostrandole una sola volta (3363)
+
+    
 
 7) Selezionare quali giochi erano presenti nei tornei nei quali hanno partecipato i giocatori il cui nome inizia per 'S' (474)
 
