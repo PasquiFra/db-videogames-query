@@ -109,7 +109,7 @@ JOIN
 
 6) Selezionare categorie e classificazioni PEGI dei videogiochi che hanno ricevuto recensioni da 4 e 5 stelle, mostrandole una sola volta (3363)
 
-    SELECT DISTINCT categories.name AS 'Categoria', pegi_labels.name AS 'Classificazione' 
+    SELECT DISTINCT videogames.id, categories.name AS 'Categoria', pegi_labels.name AS 'Classificazione' 
     FROM `videogames` 
     JOIN pegi_label_videogame ON pegi_label_videogame.videogame_id = videogames.id 
     JOIN pegi_labels ON pegi_labels.id = pegi_label_videogame.pegi_label_id 
