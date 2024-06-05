@@ -156,6 +156,11 @@ JOIN
 
 10) Selezionare i dati della prima software house che ha rilasciato un gioco, assieme ai dati del gioco stesso (software house id : 5)
 
+    SELECT videogames.id AS 'id videogame', videogames.name AS 'Videogame', software_houses.* 
+    FROM `videogames` 
+    INNER JOIN software_houses ON software_houses.id = videogames.software_house_id 
+    WHERE videogames.release_date = ( SELECT MIN(release_date) FROM videogames ); 
+
 11) Selezionare i dati del videogame (id, name, release_date, totale recensioni) con più recensioni (videogame id : potrebbe uscire 449 o 398, sono entrambi a 20)
 
 12) Selezionare la software house che ha vinto più premi tra il 2015 e il 2016 (software house id : potrebbe uscire 3 o 1, sono entrambi a 3)
